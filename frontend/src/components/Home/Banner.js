@@ -22,7 +22,7 @@ const Banner = ({onSearchTitle}) => {
         <img src={logo} alt="banner" />
         <div>
           <span id="get-part">A place to get</span>
-          <input type="text" placeholder="What are you looking for?" onChange={handleChange} />
+          <input type="text" id='search-box' placeholder="What is it today that you truely desire?" onChange={handleChange} />
           <span> the cool stuff.</span>
         </div>
       </div>
