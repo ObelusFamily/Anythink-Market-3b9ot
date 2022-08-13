@@ -1,10 +1,10 @@
-var mongoose = require("mongoose");
-var uniqueValidator = require("mongoose-unique-validator");
-var slug = require("slug");
-var User = mongoose.model("User");
+const mongoose = require("mongoose");
+const uniqueValidator = require("mongoose-unique-validator");
+const slug = require("slug");
+const User = mongoose.model("User");
 const PLACEHOLDER_IMAGE = '/placeholder.png';
 
-var ItemSchema = new mongoose.Schema(
+const ItemSchema = new mongoose.Schema(
   {
     slug: { type: String, lowercase: true, unique: true },
     title: String,

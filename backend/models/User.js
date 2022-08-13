@@ -1,11 +1,11 @@
-var mongoose = require("mongoose");
-var uniqueValidator = require("mongoose-unique-validator");
-var crypto = require("crypto");
-var jwt = require("jsonwebtoken");
-var secret = require("../config").secret;
+const mongoose = require("mongoose");
+const uniqueValidator = require("mongoose-unique-validator");
+const crypto = require("crypto");
+const jwt = require("jsonwebtoken");
+const secret = require("../config").secret;
 const PLACEHOLDER_IMAGE = 'https://static.productionready.io/images/smiley-cyrus.jpg';
 
-var UserSchema = new mongoose.Schema(
+const UserSchema = new mongoose.Schema(
   {
     username: {
       type: String,
