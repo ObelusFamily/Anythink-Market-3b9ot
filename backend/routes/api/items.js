@@ -71,6 +71,11 @@ router.get("/", auth.optional, function(req, res, next) {
         query._id = { $in: [] };
       }
 
+      if (typeof req.query.title !== "undefined") {
+        const match = new RegExp(req.query.title);
+        query.title = match;
+      }
+
       return Promise.all([
         Item.find(query)
           .limit(Number(limit))
