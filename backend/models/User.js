@@ -3,6 +3,7 @@ var uniqueValidator = require("mongoose-unique-validator");
 var crypto = require("crypto");
 var jwt = require("jsonwebtoken");
 var secret = require("../config").secret;
+const PLACEHOLDER_IMAGE = 'https://static.productionready.io/images/smiley-cyrus.jpg';
 
 var UserSchema = new mongoose.Schema(
   {
@@ -69,12 +70,13 @@ UserSchema.methods.generateJWT = function() {
 };
 
 UserSchema.methods.toAuthJSON = function() {
+  const image = this.image || PLACEHOLDER_IMAGE;
   return {
     username: this.username,
     email: this.email,
     token: this.generateJWT(),
     bio: this.bio,
-    image: this.image,
+    image,
     role: this.role
   };
 };
