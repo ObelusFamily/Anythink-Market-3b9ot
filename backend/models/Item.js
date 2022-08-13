@@ -2,6 +2,7 @@ var mongoose = require("mongoose");
 var uniqueValidator = require("mongoose-unique-validator");
 var slug = require("slug");
 var User = mongoose.model("User");
+const PLACEHOLDER_IMAGE = '/placeholder.png';
 
 var ItemSchema = new mongoose.Schema(
   {
@@ -45,11 +46,12 @@ ItemSchema.methods.updateFavoriteCount = function() {
 };
 
 ItemSchema.methods.toJSONFor = function(user) {
+  const image = this.image || PLACEHOLDER_IMAGE;
   return {
     slug: this.slug,
     title: this.title,
     description: this.description,
-    image: this.image,
+    image,
     createdAt: this.createdAt,
     updatedAt: this.updatedAt,
     tagList: this.tagList,
