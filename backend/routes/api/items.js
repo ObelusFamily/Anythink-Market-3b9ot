@@ -72,7 +72,8 @@ router.get("/", auth.optional, function(req, res, next) {
       }
 
       if (typeof req.query.title !== "undefined") {
-        query.title = req.query.title;
+        const match = new RegExp(req.query.title);
+        query.title = match;
       }
 
       return Promise.all([
