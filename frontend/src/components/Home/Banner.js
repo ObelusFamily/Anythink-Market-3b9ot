@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "../../imgs/logo.png";
 import agent from "../../agent";
 
 const Banner = ({ onSearchTitle }) => {
+  const [showSeach, setShowSeach] = useState(false);
   const handleChange = (ev) => {
     ev.preventDefault();
     const title = ev.target.value;
@@ -16,18 +17,26 @@ const Banner = ({ onSearchTitle }) => {
     );
   };
 
+  const toggleSearch = () => {
+    setShowSeach(!showSeach);
+  };
+
   return (
     <div className="banner text-white">
       <div className="container p-4 text-center">
         <img src={logo} alt="banner" />
         <div>
-          <span id="get-part">A place to get</span>
-          <input
-            type="text"
-            id="search-box"
-            placeholder="What is it today that you truely desire?"
-            onChange={handleChange}
-          />
+          <span id="get-part">
+            A place to <span onClick={toggleSearch}>get</span>
+          </span>
+          {showSeach && (
+            <input
+              type="text"
+              id="search-box"
+              placeholder="What is it today that you truely desire?"
+              onChange={handleChange}
+            />
+          )}
           <span> the cool stuff.</span>
         </div>
       </div>
