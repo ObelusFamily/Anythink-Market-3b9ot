@@ -4,15 +4,17 @@ const mongoose = require("mongoose");
 const isProduction = process.env.NODE_ENV === "production";
 const { randUserName, randProductAdjective, randEmail, randProductDescription, randProductName, randCatchPhrase } = require('@ngneat/falso');
 
-
-
 const User = require("../models/User");
 const Item = require("../models/Item");
+const Comment = require("../models/Comment");
 
 const santizeUserName = (str) => {
     return str.replace(/[^a-zA-Z0-9]/g, "");
 }
 
+const returnRandomArrayItem = (arr) => {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
 
 (async ()=>{
     mongoose.connect(process.env.MONGODB_URI);
@@ -22,6 +24,10 @@ const santizeUserName = (str) => {
     // drop all users and items collections
     await User.deleteMany({});
     await Item.deleteMany({});
+    await Comment.deleteMany({});
+    const users = [];
+    const items = [];
+    const comments = [];
     for (let i = 0; i < 100; i++) {
         const user = new User({
             username: `${santizeUserName(randUserName())}${i}`,
@@ -30,18 +36,30 @@ const santizeUserName = (str) => {
             bio: randCatchPhrase(),
         });
         user.setPassword("password");
-        await user.save();
-        const items = [];
-        for (let j = 0; j < 100; j++) {
-            items.push(new Item({
-                title: randProductName(),
-                description: randProductDescription(),
-                image: `https://picsum.photos/id/${j}/200/300`,
-                tagList: [randProductAdjective(), randProductAdjective()],
-                seller: user._id,
-            }));
-        }
-        await Item.insertMany(items);
+        users.push(user);
     }
+    await User.insertMany(users);
+    
+    for (let i = 0; i < 100; i++) {
+        items.push(new Item({
+            title: randProductName(),
+            description: randProductDescription(),
+            image: `https://picsum.photos/id/${i}/200/300`,
+            tagList: [randProductAdjective(), randProductAdjective()],
+            seller: returnRandomArrayItem(users)._id,
+        }));
+    }
+    await Item.insertMany(items);
+
+    for (let i = 0; i < 100; i++) {
+        comments.push(new Comment({
+            body: randCatchPhrase(),
+            seller: returnRandomArrayItem(users)._id,
+            item: returnRandomArrayItem(items)._id,
+        }));
+    }
+    await Comment.insertMany(comments);
+
+    console.log("Seeding complete");
     process.exit();    
 })();
